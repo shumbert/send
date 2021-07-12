@@ -1,0 +1,24 @@
+#! /usr/bin/python3
+
+import base58
+import nacl.pwhash
+import nacl.secret
+import nacl.utils
+import sys
+
+import http.server
+import socketserver
+
+PORT = 8000
+
+class SendHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
+    def do_POST(self):
+        print('we got a request')
+        self.send_response(200)
+
+def main():
+    httpd = http.server.HTTPServer(('', PORT), SendHTTPRequestHandler)
+    httpd.serve_forever()
+
+if __name__ == "__main__":
+    main()
