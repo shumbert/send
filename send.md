@@ -115,4 +115,6 @@ Operations:
 Using application/json data format
 
 # todo
+- finish learning about flask
+- write the api part
 - learn more about how to write tests
