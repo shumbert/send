@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 
 app = Flask(__name__)
 
@@ -7,6 +7,10 @@ def hello_world():
     #return "<p>Hello, World!</p>"
     return "<p>Hello, " + name + "!</p>"
 
-@app.route("/api/send")
-def hello_world():
+@app.route("/api/send", methods=['GET', 'PUT', 'POST'])
+def send():
+    pass
+
+@app.route("/api/file", methods=['POST'])
+def send():
     pass
