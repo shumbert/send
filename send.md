@@ -105,16 +105,60 @@ On the server each send is in its own directory (named using the send idenfitier
 
 We use authenticated encryption, i.e. during decryption the mac is checked. If there is any mismatch it will result in an error. That protects againt malicious change of the data but also againt transmission errors.
 
-# Server API
-Flask + Gunicorn RESTful api
+Logic for creating a new send:
+- client-side creates a new send with some optional parameters
+- client-side locally inits the tree structure
+- client-side go-through the path to upload
+  - for each file it uploads the file using the file api endpoint (server returns blob id)
+  - after successful upload client-side updates the tree structure with file blob id, name and size
+- after all files are uploaded client-side updates the send
 
-Operations:
-- send: GET/PUT/POST
+# Server API
+Flask + Gunicorn RESTful api with the following operations:
+- send: GET/PUT/POST (why PUT, do we need to update the send metadata at some point?)
 - file: POST
 
+## send
+### POST
+/api/send
+
+Create a new send on the server
+
+POST request body contains the send metadata in JSON format:
+```
+{
+  encrypted data
+  hash
+  link
+  access count
+}
+```
+
+server returns the send id (16 bytes random identifier)
+
+### GET
+/api/send/<send_id>
+
+returns the metadata json
 Using application/json data format
 
+## file
+takes send id and blob id as parameters, file is sent in the POST body base64 encoded
+
+response:
+- do we need to provide something meaningful apart from the HTTP response code?
+
+
+# App setup
+```
+sudo apt install python3-venv
+python3 -m venv .venv
+. .venv/bin/activate
+pip install Flask
+```
 # todo
-- finish learning about flask
 - write the api part
 - learn more about how to write tests
+
+
+https://en.wikipedia.org/wiki/Clean_URL
